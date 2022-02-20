@@ -11,8 +11,9 @@ import de.fhpotsdam.unfolding.utils.MapUtils;
 /** HelloWorld
   * An application with two maps side-by-side zoomed in on different locations.
   * Author: UC San Diego Coursera Intermediate Programming team
-  * @author Your name here
+  * @author Sree Lakshmi N.
   * Date: July 17, 2015
+  * Edited: Feb 20, 2021
   * */
 public class HelloWorld extends PApplet
 {
@@ -32,11 +33,11 @@ public class HelloWorld extends PApplet
 	/** The map we use to display our home town: La Jolla, CA */
 	UnfoldingMap map1;
 	
-	/** The map you will use to display your home town */ 
+	/** The map you will use to display my home town, Edapally */ 
 	UnfoldingMap map2;
 
 	public void setup() {
-		size(800, 600, P2D);  // Set up the Applet window to be 800x600
+		size(900, 600, P2D);  // Set up the Applet window to be 800x600
 		                      // The OPENGL argument indicates to use the 
 		                      // Processing library's 2D drawing
 		                      // You'll learn more about processing in Module 3
@@ -75,6 +76,16 @@ public class HelloWorld extends PApplet
 		MapUtils.createDefaultEventDispatcher(this, map1);
 		
 		// TODO: Add code here that creates map2 
+		
+		map2 = new UnfoldingMap(this, 450, 50, 350, 500, provider);
+		
+		// The next line zooms in and centers the map at 
+	    // 10.0261 (latitude) and 76.3125 (longitude)
+	    map2.zoomAndPanTo(zoomLevel, new Location(10.0261f, 76.3125f));
+	    
+	 // This line makes the map interactive
+	 	MapUtils.createDefaultEventDispatcher(this, map2);
+	 		
 		// Then you'll modify draw() below
 
 	}
@@ -84,6 +95,7 @@ public class HelloWorld extends PApplet
 		// So far we only draw map1...
 		// TODO: Add code so that both maps are displayed
 		map1.draw();
+		map2.draw();
 	}
 
 	
