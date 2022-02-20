@@ -1,5 +1,6 @@
 package practice;
 
+// Practising memory models
 public class MyClass {
 	private int a;
 	public double b;
