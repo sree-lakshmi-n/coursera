@@ -1,5 +1,6 @@
 package practice;
 
+// Familiarising with local and member variables
 public class LocationScopeTester {
 	public static void main(String[] args) {
 		double latitude = -15.5;
