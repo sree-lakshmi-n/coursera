@@ -1,3 +1,4 @@
+// Displaying World map with the location of Chile
 package module3;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
