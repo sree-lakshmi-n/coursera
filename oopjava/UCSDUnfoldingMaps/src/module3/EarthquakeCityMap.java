@@ -16,6 +16,7 @@ import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
+import de.fhpotsdam.unfolding.providers.Microsoft;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 
 //Parsing library
@@ -24,8 +25,9 @@ import parsing.ParseFeed;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Sree lakshmi N.
  * Date: July 17, 2015
+ * Date: Mar 17, 2022
  * */
 public class EarthquakeCityMap extends PApplet {
 
@@ -51,14 +53,15 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	public void setup() {
-		size(950, 600, OPENGL);
+		size(1400, 600, OPENGL);
 
 		if (offline) {
-		    map = new UnfoldingMap(this, 200, 50, 700, 500, new MBTilesMapProvider(mbTilesString));
+		    map = new UnfoldingMap(this, 200, 50, 1200, 500, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 700, 500, new Google.GoogleMapProvider());
+//			map = new UnfoldingMap(this, 200, 50, 1200, 500, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 1200, 500, new Microsoft.AerialProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			//earthquakesURL = "2.5_week.atom";
 		}
@@ -78,14 +81,17 @@ public class EarthquakeCityMap extends PApplet {
 	    // earthquakes.  Then add each new SimplePointMarker to the 
 	    // List markers (so that it will be added to the map in the line below)
 	    
-	    
+	    for( PointFeature eq: earthquakes) {
+	    	Marker mk = createMarker(eq);
+	    	markers.add(mk);
+	    }
 	    // Add the markers to the map so that they are displayed
 	    map.addMarkers(markers);
 	}
 		
 	/* createMarker: A suggested helper method that takes in an earthquake 
 	 * feature and returns a SimplePointMarker for that earthquake
-	 * 
+	 *
 	 * In step 3 You can use this method as-is.  Call it from a loop in the 
 	 * setp method.  
 	 * 
@@ -97,7 +103,7 @@ public class EarthquakeCityMap extends PApplet {
 		// To print all of the features in a PointFeature (so you can see what they are)
 		// uncomment the line below.  Note this will only print if you call createMarker 
 		// from setup
-		//System.out.println(feature.getProperties());
+//		System.out.println(feature.getProperties());
 		
 		// Create a new SimplePointMarker at the location given by the PointFeature
 		SimplePointMarker marker = new SimplePointMarker(feature.getLocation());
@@ -108,7 +114,8 @@ public class EarthquakeCityMap extends PApplet {
 		// Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
 	    int yellow = color(255, 255, 0);
-		
+		int blue = color(0,0,255);
+		int red = color(255,0,0);
 		// TODO (Step 4): Add code below to style the marker's size and color 
 	    // according to the magnitude of the earthquake.  
 	    // Don't forget about the constants THRESHOLD_MODERATE and 
@@ -117,7 +124,17 @@ public class EarthquakeCityMap extends PApplet {
 	    // the magnitude to these variables (and change their value in the code 
 	    // above if you want to change what you mean by "moderate" and "light")
 	    
-	    
+	    if(mag < THRESHOLD_LIGHT) {
+			marker.setColor(blue);
+			marker.setRadius(5);
+		}
+	    else if(mag < THRESHOLD_MODERATE) {
+	    	marker.setColor(yellow);
+	    }
+	    else if(mag > THRESHOLD_MODERATE) {
+	    	marker.setColor(red);
+	    	marker.setRadius(15);
+	    }
 	    // Finally return the marker
 	    return marker;
 	}
@@ -134,6 +151,27 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
-	
+		rect(20, 50, 220, 220); // The key box as rectangle	
+		fill(0);	// text color
+		String heading = "Earthquake Key";
+		String major_eq = "5.0 + Magnitude";
+		String moderate_eq = "4.0 + Magnitude";
+		String minor_eq = "Below 4.0";
+		textSize(18);
+		text(heading, 40, 75);
+		fill(255,0,0);	// red color for filling major earthquake marker circle
+		ellipse(50,115,15,15);	// red circle in key
+		fill(0);
+		textSize(15);
+		text(major_eq, 80, 120);
+		fill(255,255,0);	// yellow color for filling moderate earthquake marker circle
+		ellipse(50,165,10,10);	// yellow circle in key
+		fill(0);
+		text(moderate_eq, 80, 170);
+		fill(0,0,255);	// blue color for filling moderate earthquake marker circle
+		ellipse(50,210,5,5);	// blue circle in key
+		fill(0);
+		text(minor_eq, 80, 220);
+		fill(200);	// box color
 	}
 }
